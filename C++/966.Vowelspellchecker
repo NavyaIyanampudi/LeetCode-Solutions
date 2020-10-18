@@ -1,0 +1,42 @@
+vector<string> spellchecker(vector<string>& wordlist, vector<string>& queries) {
+        unordered_set<string> orignal_words;
+        unordered_map<string,string> word_low;
+        unordered_map<string,string> word_vowels;
+        vector<string> answer;
+        for(auto i:wordlist){
+            orignal_words.insert(i);
+            string temp1="",temp2="",valid="aeiou";
+            for(auto j:i){
+                char c=tolower(j);
+                temp1+=c;
+                if(valid.find(c)!=string::npos) temp2+='*';
+                else temp2+=c;
+            }
+            if(word_low.find(temp1)==word_low.end()){
+                word_low[temp1]=i;
+            }
+            if(word_vowels.find(temp2)==word_vowels.end()){
+                word_vowels[temp2]=i;
+            }
+        }
+        for(auto i:queries){
+            if(orignal_words.count(i)) answer.push_back(i);
+            else{
+                string temp1="",temp2="",valid="aeiou";
+                for(auto j:i){
+                    char c=tolower(j);
+                    temp1+=c;
+                    if(valid.find(c)!=string::npos) temp2+='*';
+                    else temp2+=c;
+                }
+                if(word_low.find(temp1)!=word_low.end()){
+                    answer.push_back(word_low[temp1]);
+                }
+                else if(word_vowels.find(temp2)!=word_vowels.end()){
+                    answer.push_back(word_vowels[temp2]);
+                }
+                else answer.push_back("");
+            }
+        }
+        return answer;
+    }
